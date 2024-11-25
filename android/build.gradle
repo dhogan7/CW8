@@ -1,0 +1,30 @@
+// This block defines repositories for all subprojects
+allprojects {
+    repositories {
+        google()  // Ensure that Google's repository is included
+        mavenCentral()  // Ensure that Maven Central is included
+    }
+}
+
+// Define a custom build directory for the project
+rootProject.buildDir = "../build"
+
+// Ensure that all subprojects use the same root build directory
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    // Make sure evaluation depends on the ":app" project (if necessary)
+    project.evaluationDependsOn(":app")
+}
+
+// Task to clean the build directory
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+
+// Buildscript configuration for classpath dependencies
+buildscript {
+    repositories {
+        google()  // Google's repository for Android dependencies
+        mavenCentral()  // Maven Central repository for other dependencies
+    }
+}
